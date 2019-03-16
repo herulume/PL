@@ -16,16 +16,16 @@ silence (.|\n)
 
 %%
 <INITIAL>{
-"<!--"[ ]+"="+                 { BEGIN LINK;  }
-"tag:{"                        { BEGIN TAG;   }
-"#ID:{"                        { BEGIN ID;    }
+"<!--"[ ]+"="+                 { BEGIN LINK;      }
+"tag:{"                        { BEGIN TAG;       }
+"#ID:{"                        { BEGIN ID;        }
 ({word}("-"{word})?[ ]?)+"}\n" { BEGIN CATEGORIA; }
-"[".*"]""\n"+                  { BEGIN TEXTO; }
+"[".*"]""\n"+                  { BEGIN TEXTO;     }
 }
 
 <LINK>{
-[^ ]+|^"-->"            { printf("Link: %s\n", yytext); }
-[ ]+"-->"[ ]*"\n<pub>"  { BEGIN INITIAL;       }
+[^ ]+|^"-->"           { printf("Link: %s\n", yytext); }
+[ ]+"-->"[ ]*"\n<pub>" { BEGIN INITIAL;       }
 }
 
 <TAG>{
@@ -40,17 +40,20 @@ silence (.|\n)
 
 <CATEGORIA>{
 {wordPT} { printf("Categoria: %s\n", yytext); }
-"\n"+  { BEGIN TITULO;                      }
+"\n"+    { BEGIN TITULO;                      }
 }
 
 <TITULO>{
 (([0-9]*|{wordPT})[ ]*)+ { printf("Titulo: %s\n", yytext); }
-"\n"                    { BEGIN INITIAL;                  }
+"\n"                     { BEGIN INITIAL;                  }
 }
 
 <TEXTO>{
-(.*"\n")+        { printf("Texto: %s\n", yytext); }
-"</pub>"                    { BEGIN INITIAL;                 }
+([^"\n"]+"\n""\n"?)+ {
+    yytext[yyleng-1] = '\0';
+    printf("Texto: %s\n<lol>", yytext);
+}
+^\n(\n+).*"\n</pub>" { BEGIN INITIAL; }
 }
 
 <*>{silence}
