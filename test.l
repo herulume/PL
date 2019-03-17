@@ -1,7 +1,14 @@
+%option c++
+%option noyywrap
 %{
+#include "article.h"
+#include <iostream> 
 #include <stdio.h>
+vector<Article*> articles;
+FlexLexer* lexer = new yyFlexLexer;
 %}
 
+%x ARTICLE
 %x LINK
 %x TAG
 %x ID
@@ -23,9 +30,14 @@ silence (.|\n)
 "[".*"]""\n"+                  { BEGIN TEXTO;     }
 }
 
+<ARTICLE>{
+"<pub>" {printf("COMECEI!\n"); BEGIN INITIAL;}
+"\n</pub>" {printf("Acabei!\n");BEGIN INITIAL;}
+}
+
 <LINK>{
 [^ ]+|^"-->"           { printf("Link: %s\n", yytext); }
-[ ]+"-->"[ ]*"\n<pub>" { BEGIN INITIAL;       }
+[ ]+"-->"[ ]*"\n" { BEGIN ARTICLE;       }
 }
 
 <TAG>{
@@ -49,11 +61,11 @@ silence (.|\n)
 }
 
 <TEXTO>{
-([^"\n"]+"\n""\n"?)+ {
+(.+"\n""\n"?)+ {
     yytext[yyleng-1] = '\0';
-    printf("Texto: %s\n<lol>", yytext);
+    printf("Texto: %s\n", yytext);
 }
-^\n(\n+).*"\n</pub>" { BEGIN INITIAL; }
+^\n(\n+).* { BEGIN ARTICLE; }
 }
 
 <*>{silence}
@@ -61,6 +73,7 @@ silence (.|\n)
 int yywrap() { return 1; }
 
 int main() {
-    yylex();
+    FlexLexer* lexer = new yyFlexLexer;
+    lexer -> yylex();
     return 0;
 }
