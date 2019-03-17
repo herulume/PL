@@ -19,21 +19,21 @@ class Article {
     void htmlEnd();
   public:
     string link;
-    int id;
+    string id;
     string title;
     string authorDate;
     vector<string> tags;
     string category;
-    vector <string> text;
+    string text;
     vector <string> abbreviations;
 
-    void setId(int id);
+    void setId(string id);
     void setTitle(string title);
     void setAuthorDate(string AuthorDate);
     void addTag(string tag);
     void setCategory(string category);
-    void addText(string text);
+    void setText(string text);
     void addAbbreviation(string abbreviation);
     Article(string link);
     void printer();
-};
+} ;

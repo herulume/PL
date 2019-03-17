@@ -13,13 +13,15 @@ else
 endif
 
 
-articles: test.l
+articles: test.l article.o
 	@mkdir build
 	@flex --noyywrap --c++ test.l
-	$(CXX) $(CFLAGS) lex.yy.cc -o articles
-	@rm lex.yy.cc
+	$(CXX) $(CFLAGS) lex.yy.cc article.o -o articles
+	@rm lex.yy.cc article.o
 	@mv articles build/
 
+article.o:
+	$(CXX) -c article.cpp -std=c++11
 
 clean:
 	@rm -rf build lex.yy.cc *.o 2>/dev/null || true
