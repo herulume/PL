@@ -29,6 +29,7 @@ silence (.|\n)
 "#ID:{"                        { BEGIN ID;        }
 ({word}("-"{word})?[ ]?)+"}\n" { BEGIN CATEGORIA; }
 "[".*"]""\n"+                  { BEGIN TEXTO;     }
+"#DATE:".+"] "           { BEGIN AUTHOR_DATE;}
 }
 
 
@@ -38,7 +39,7 @@ silence (.|\n)
 }
 
 <AUTHOR_DATE>{
-"\n[" { article -> setAuthorDate(yytext); std::cout << "LINK: " << article->authorDate << '\n'; }
+.+|^"\n" { article -> setAuthorDate(yytext); std::cout << "AUTHOR_DATE: " << article->authorDate << '\n'; BEGIN INITIAL;}
 }
 
 <LINK>{
