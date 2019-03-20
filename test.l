@@ -2,7 +2,7 @@
 %option noyywrap
 %{
 #include "article.h"
-#include <iostream> 
+#include <iostream>
 #include <stdio.h>
 Article* article;
 FlexLexer* lexer = new yyFlexLexer;
@@ -34,8 +34,8 @@ silence (.|\n)
 
 
 <ARTICLE>{
-"<pub>" {printf("COMECEI!\n"); BEGIN INITIAL;}
-"\n</pub>" {article->printer(), printf("Acabei!\n");BEGIN INITIAL;}
+"<pub>"    { printf("COMECEI!\n"); BEGIN INITIAL;                    }
+"\n</pub>" { article->printer(); printf("Acabei!\n"); BEGIN INITIAL; }
 }
 
 <AUTHOR_DATE>{
@@ -43,39 +43,37 @@ silence (.|\n)
 }
 
 <LINK>{
-[^ ]+|^"-->"           { article = new Article(yytext);         std::cout << "LINK: " << article->link << '\n'; }
-[ ]+"-->"[ ]*"\n" { BEGIN ARTICLE;       }
+[^ ]+|^"-->"      { article = new Article(yytext); std::cout << "LINK: " << article->link << '\n'; }
+[ ]+"-->"[ ]*"\n" { BEGIN ARTICLE;                                                                 }
 }
 
 <TAG>{
-[^"}"]+ { article -> addTag(yytext); std::cout << "TAG: " << article->tags[1] << '\n';}
-"}"     { BEGIN INITIAL;               }
+[^"}"]+ { article -> addTag(yytext); std::cout << "TAG: " << article->tags[1] << '\n'; }
+"}"     { BEGIN INITIAL;                                                               }
 }
 
 <ID>{
-[^ ]+ { article -> setId(yytext); std::cout << "ID: " << article->id << '\n';}
-[ ]   { BEGIN INITIAL;              }
+[^ ]+ { article -> setId(yytext); std::cout << "ID: " << article->id << '\n'; }
+[ ]   { BEGIN INITIAL;                                                        }
 }
 
 <CATEGORIA>{
 {wordPT} { article -> setCategory(yytext); std::cout << "CATEGORY: " << article->category << '\n'; }
-"\n"+    { BEGIN TITULO;                      }
+"\n"+    { BEGIN TITULO;                                                                           }
 }
 
 <TITULO>{
 (([0-9]*|{wordPT})[ ]*)+ { article -> setTitle(yytext); std::cout << "TITLE: " << article->title << '\n';  }
-"\n"                     { BEGIN INITIAL;                  }
+"\n"                     { BEGIN INITIAL;                                                                  }
 }
 
 <TEXTO>{
-(.+"\n""\n"?)+ {
-    yytext[yyleng-1] = '\0';
-    article -> setText(yytext); std::cout << "TEXT: " << article->text << '\n';;
-}
-^\n(\n+).* { BEGIN INITIAL; }
+(.+"\n""\n"?)+ { yytext[yyleng-1] = '\0'; article -> setText(yytext); std::cout << "TEXT: " << article->text << '\n'; }
+^\n(\n+).*     { BEGIN INITIAL;                                                                                       }
 }
 
 <*>{silence}
+
 %%
 int yywrap() { return 1; }
 
