@@ -1,34 +1,34 @@
 #include "article.h"
 
-Article::Article(string link){
+Article::Article(std::string link){
     this -> link = link;
 }
 
-void Article::setId(string id) {
+void Article::setId(std::string id) {
     this -> id = id;
 }
 
-void Article::setTitle(string title) {
+void Article::setTitle(std::string title) {
     this -> title = title;
 }
 
-void Article::setAuthorDate(string authorDate) {
+void Article::setAuthorDate(std::string authorDate) {
     this -> authorDate = authorDate;
 }
 
-void Article::addTag(string tag) {
+void Article::addTag(std::string tag) {
     this -> tags.push_back(tag);
 }
 
-void Article::setCategory(string category) {
+void Article::setCategory(std::string category) {
     this -> category = category;
 }
 
-void Article::setText(string text) {
+void Article::setText(std::string text) {
     this -> text = text;
 }
 
-void Article::addAbbreviation(string abbreviation) {
+void Article::addAbbreviation(std::string abbreviation) {
     this -> abbreviations.push_back(abbreviation);
 }
 

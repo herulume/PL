@@ -1,39 +1,33 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <map>
-#include <unordered_map>
-#include <algorithm>
-#include <string>
-#include <cstring>
-#include <string.h>
-#include <stdexcept>
-#include <stdio.h>
+#ifndef __ARTICLE_H__
+#define __ARTICLE_H__
 
-using namespace std;
+#include <vector>
+#include <string>
 
 class Article {
     private:
-        ofstream file;
+        std::string file;
         void htmlStart();
         void htmlEnd();
     public:
-        string link;
-        string id;
-        string title;
-        string authorDate;
-        vector<string> tags;
-        string category;
-        string text;
-        vector <string> abbreviations;
+        std::string link;
+        std::string id;
+        std::string title;
+        std::string authorDate;
+        std::vector<std::string> tags;
+        std::string category;
+        std::string text;
+        std::vector<std::string> abbreviations;
 
-        void setId(string id);
-        void setTitle(string title);
-        void setAuthorDate(string AuthorDate);
-        void addTag(string tag);
-        void setCategory(string category);
-        void setText(string text);
-        void addAbbreviation(string abbreviation);
-        Article(string link);
+        void setId(std::string id);
+        void setTitle(std::string title);
+        void setAuthorDate(std::string AuthorDate);
+        void addTag(std::string tag);
+        void setCategory(std::string category);
+        void setText(std::string text);
+        void addAbbreviation(std::string abbreviation);
+        Article(std::string link);
         void printer();
-} ;
+};
+
+#endif
