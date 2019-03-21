@@ -2,7 +2,9 @@
 %option noyywrap
 %{
 #include "headers/article.h"
-Article* article = new Article("");
+#include <vector>
+std::vector<Article*> articles;
+Article* article;
 FlexLexer* lexer = new yyFlexLexer;
 %}
 
@@ -21,11 +23,10 @@ silence (.|\n)
 
 %%
 <INITIAL>{
-"<!--"[ ]+"="+                 { BEGIN LINK;      }
-"tag:{"                        { BEGIN TAG;       }
-"#ID:{"                        { BEGIN ID;        }
-({word}("-"{word})?[ ]?)+"}\n" { BEGIN CATEGORIA; }
-"[".*"]""\n"+                  { BEGIN TEXTO;     }
+"<!--"[ ]+"="+                 { BEGIN LINK;       }
+"tag:{"                        { BEGIN TAG;        }
+"#ID:{"                        { BEGIN ID;         }
+({word}("-"{word})?[ ]?)+"}\n" { BEGIN CATEGORIA;  }
 "#DATE:".+"] "                 { BEGIN AUTHOR_DATE;}
 }
 
@@ -37,7 +38,7 @@ silence (.|\n)
 
 <AUTHOR_DATE>{
 .+|^"\n" { article->setAuthorDate(yytext);
-           BEGIN INITIAL;
+           BEGIN TEXTO;
          }
 }
 
@@ -62,16 +63,20 @@ silence (.|\n)
 }
 
 <TEXTO>{
-(.+"\n""\n"?)+ { article->setText(yytext);         }
-^\n(\n+).*     { article->toHTML(); article->printer(); BEGIN INITIAL; }
+(.+"\n""\n"?)+ { article->setText(yytext);
+                        articles.push_back(article);
+                        BEGIN INITIAL;
+                      }
 }
 
 <*>{silence}
 
 %%
-int yywrap() { return 1; }
 int main() {
     FlexLexer* lexer = new yyFlexLexer;
     lexer->yylex();
+    for (auto& a : articles) {
+        a->toHTML();
+    }
     return 0;
 }

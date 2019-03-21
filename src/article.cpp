@@ -40,9 +40,8 @@ void Article::printer() {
     std::cout << "Link: " << this->link << std::endl;
     std::cout << "Title: " << this->title << std::endl;
     std::cout << "Id: " << this->id << std::endl;
-    std::cout << "Author: " << this->authorDate << std::endl;
+    std::cout << "Author_Date: " << this->authorDate << std::endl;
     std::cout << "Category: " << this->category << std::endl;
-    std::cout << "Date: " << this->authorDate << std::endl;
     for (auto i = this->tags.begin(); i != this->tags.end(); ++i)
         std::cout << "Tag: "  << *i << std::endl;
     std::cout << "Text: " << this->text << std::endl;
