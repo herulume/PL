@@ -7,8 +7,6 @@
 class Article {
     private:
         std::string file;
-        void htmlStart();
-        void htmlEnd();
     public:
         std::string link;
         std::string id;
