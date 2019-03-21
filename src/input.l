@@ -2,7 +2,7 @@
 %option noyywrap
 %{
 #include "headers/article.h"
-Article* article;
+Article* article = new Article("");
 FlexLexer* lexer = new yyFlexLexer;
 %}
 
@@ -63,7 +63,7 @@ silence (.|\n)
 
 <TEXTO>{
 (.+"\n""\n"?)+ { article->setText(yytext);         }
-^\n(\n+).*     { BEGIN INITIAL; article->toHTML(); }
+^\n(\n+).*     { article->toHTML(); article->printer(); BEGIN INITIAL; }
 }
 
 <*>{silence}
