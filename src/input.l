@@ -5,7 +5,6 @@
 #include <vector>
 std::vector<Article*> articles;
 Article* article;
-FlexLexer* lexer = new yyFlexLexer;
 %}
 
 %x LINK
