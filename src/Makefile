@@ -26,8 +26,8 @@ clean:
 	@rm -rf ../bin lex.yy.cc *.o 2>/dev/null || true
 
 install:
-	@cp ../articles /usr/bin
-	@cp ../articles /usr/local/bin
+	@cp ../bin/articles /usr/bin
+	@cp ../bin/articles /usr/local/bin
 
 remove:
 	@rm /usr/bin/articles
