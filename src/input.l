@@ -1,7 +1,6 @@
 %option c++
 %option noyywrap
 %{
-#include <iostream>
 #include "headers/article.h"
 Article* article;
 FlexLexer* lexer = new yyFlexLexer;
@@ -49,7 +48,7 @@ silence (.|\n)
 
 <ID>{
 [^ ]+ { article->setId(yytext); }
-[ ]   { BEGIN INITIAL;                                                        }
+[ ]   { BEGIN INITIAL;          }
 }
 
 <CATEGORIA>{
@@ -71,7 +70,6 @@ silence (.|\n)
 
 %%
 int yywrap() { return 1; }
-
 int main() {
     FlexLexer* lexer = new yyFlexLexer;
     lexer->yylex();
