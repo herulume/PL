@@ -7,7 +7,6 @@
 class Article {
     private:
         std::string file;
-    public:
         std::string link;
         std::string id;
         std::string title;
@@ -16,7 +15,7 @@ class Article {
         std::string category;
         std::string text;
         std::vector<std::string> abbreviations;
-
+    public:
         void setId(std::string id);
         void setTitle(std::string title);
         void setAuthorDate(std::string AuthorDate);
@@ -26,6 +25,7 @@ class Article {
         void addAbbreviation(std::string abbreviation);
         Article(std::string link);
         void printer();
+        void toHTML();
 };
 
 #endif

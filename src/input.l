@@ -62,8 +62,8 @@ silence (.|\n)
 }
 
 <TEXTO>{
-(.+"\n""\n"?)+ { article->setText(yytext);          }
-^\n(\n+).*     { BEGIN INITIAL; article->printer(); }
+(.+"\n""\n"?)+ { article->setText(yytext);         }
+^\n(\n+).*     { BEGIN INITIAL; article->toHTML(); }
 }
 
 <*>{silence}
