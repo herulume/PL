@@ -3,6 +3,10 @@
 #include <fstream>
 #include <sstream>
 
+Article::~Article() {
+}
+
+
 Article::Article(std::string link){
     this->link = link;
 }

@@ -16,6 +16,8 @@ class Article {
         std::string text;
         std::vector<std::string> abbreviations;
     public:
+        Article(std::string link);
+        ~Article();
         void setId(std::string id);
         void setTitle(std::string title);
         void setAuthorDate(std::string AuthorDate);
@@ -23,7 +25,6 @@ class Article {
         void setCategory(std::string category);
         void setText(std::string text);
         void addAbbreviation(std::string abbreviation);
-        Article(std::string link);
         void printer();
         void toHTML();
 };

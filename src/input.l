@@ -77,6 +77,8 @@ int main() {
     lexer->yylex();
     for (auto& a : articles) {
         a->toHTML();
+        delete a;
     }
+    delete lexer;
     return 0;
 }
