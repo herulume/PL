@@ -20,6 +20,10 @@ marks   (à|á|â|ã|é|è|ê|ẽ|í|ì|î|ĩ|ó|ò|ô|õ|ú|ù|û|ũ)
 wordPT  ({word}+{marks}*{word}*)
 silence (.|\n)
 
+floatN  ([0-9]+\.[0-9]+)
+intN    ([0-9]+)
+number  ({floatN}|{intN})
+
 %%
 <INITIAL>{
 "<!--"[ ]+"="+                 { BEGIN LINK;       }
@@ -57,15 +61,15 @@ silence (.|\n)
 }
 
 <TITULO>{
-(([0-9]*|{wordPT})[ ]*)+ { article->setTitle(yytext); }
-"\n"                     { BEGIN INITIAL;             }
+(({number}|{wordPT})[ ]*)+ { article->setTitle(yytext); }
+"\n"                                { BEGIN INITIAL;             }
 }
 
 <TEXTO>{
 (.+"\n""\n"?)+ { article->setText(yytext);
-                        articles.push_back(article);
-                        BEGIN INITIAL;
-                      }
+                 articles.push_back(article);
+                 BEGIN INITIAL;
+               }
 }
 
 <*>{silence}
