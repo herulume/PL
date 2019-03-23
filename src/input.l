@@ -26,23 +26,22 @@ number  ({floatN}|{intN})
 
 %%
 <INITIAL>{
-"<!--"[ ]+"="+                 { BEGIN LINK;       }
-"tag:{"                        { BEGIN TAG;        }
-"#ID:{"                        { BEGIN ID;         }
-({word}("-"{word})?[ ]?)+"}\n" { BEGIN CATEGORIA;  }
-"#DATE:".+"] "                 { BEGIN AUTHOR_DATE;}
+"<!--"" "+"="+" "?                 { BEGIN LINK;       }
+(?i:tag)":{"                       { BEGIN TAG;        }
+"#"(?i:ID)":{"                     { BEGIN ID;         }
+({wordPT}("-"{wordPT})?[ ]?)+"}\n" { BEGIN CATEGORIA;  }
+"#DATE:".+"] "                     { BEGIN AUTHOR_DATE;}
 }
 
 
 <LINK>{
-[^ ]+|^"-->"      { article = new Article(yytext); }
-[ ]+"-->"[ ]*"\n" { BEGIN INITIAL;                 }
+[^ ]+             { article = new Article(yytext); }
+[ ]+"-->"" "*"\n" { BEGIN INITIAL;                 }
 }
 
 <AUTHOR_DATE>{
-.+|^"\n" { article->setAuthorDate(yytext);
-           BEGIN TEXTO;
-         }
+.+                     { article->setAuthorDate(yytext); }
+"\n"("[".*"]""\n")?    { BEGIN TEXTO;                    }
 }
 
 <TAG>{
@@ -56,20 +55,20 @@ number  ({floatN}|{intN})
 }
 
 <CATEGORIA>{
-{wordPT} { article->setCategory(yytext); }
+.+ { article->setCategory(yytext); }
 "\n"+    { BEGIN TITULO;                 }
 }
 
 <TITULO>{
-(({number}|{wordPT})[ ]*)+ { article->setTitle(yytext); }
+.+ { article->setTitle(yytext); }
 "\n"                                { BEGIN INITIAL;             }
 }
 
 <TEXTO>{
-(.+"\n""\n"?)+ { article->setText(yytext);
-                 articles.push_back(article);
-                 BEGIN INITIAL;
-               }
+"\n"+((?i:Etiquetas).+)?"\n</pub>"   { BEGIN INITIAL; }
+(.+"\n""\n"?)+                       { article->setText(yytext);
+                                       articles.push_back(article);
+                                     }
 }
 
 <*>{silence}
