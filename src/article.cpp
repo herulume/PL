@@ -52,11 +52,12 @@ void Article::printer() {
 
 
 void Article::toHTML() {
+    std::string path = "./output/articles/";
     std::ofstream outfile;
     std::ostringstream os;
     std::ostringstream fileName;
 
-    fileName << this->id << ".html";
+    fileName << path << this->id << ".html";
     outfile.open(fileName.str());
     if(!outfile.is_open()) {
         std::cerr  << "Error creating HTML file!" << std::endl;

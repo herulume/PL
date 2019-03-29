@@ -2,8 +2,8 @@
 %option noyywrap
 %{
 #include "headers/article.h"
-#include <vector>
-std::vector<Article*> articles;
+#include "headers/wiki.h"
+Wiki* articles {new Wiki};
 Article* article;
 %}
 
@@ -24,13 +24,14 @@ floatN  ([0-9]+\.[0-9]+)
 intN    ([0-9]+)
 number  ({floatN}|{intN})
 
+
 %%
 <INITIAL>{
-"<!--"" "+"="+" "?                 { BEGIN LINK;       }
-(?i:tag)":{"                       { BEGIN TAG;        }
-"#"(?i:ID)":{"                     { BEGIN ID;         }
-({wordPT}("-"{wordPT})?[ ]?)+"}\n" { BEGIN CATEGORIA;  }
-"#DATE:".+"] "                     { BEGIN AUTHOR_DATE;}
+"<!--"" "+"="+" "?                 { BEGIN LINK;        }
+(?i:tag)":{"                       { BEGIN TAG;         }
+"#"(?i:ID)":{"                     { BEGIN ID;          }
+({wordPT}("-"{wordPT})?[ ]?)+"}\n" { BEGIN CATEGORIA;   }
+"#DATE:".+"] "                     { BEGIN AUTHOR_DATE; }
 }
 
 
@@ -67,7 +68,7 @@ number  ({floatN}|{intN})
 <TEXTO>{
 "\n"+((?i:Etiquetas).+)?"\n</pub>"   { BEGIN INITIAL; }
 (.+"\n""\n"?)+                       { article->setText(yytext);
-                                       articles.push_back(article);
+                                       articles->addArticle(article);
                                      }
 }
 
@@ -77,10 +78,8 @@ number  ({floatN}|{intN})
 int main() {
     FlexLexer* lexer = new yyFlexLexer;
     lexer->yylex();
-    for (auto& a : articles) {
-        a->toHTML();
-        delete a;
-    }
+    articles->printArticles();
     delete lexer;
+    delete articles;
     return 0;
 }

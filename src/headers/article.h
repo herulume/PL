@@ -5,7 +5,7 @@
 #include <string>
 
 class Article {
-    private:
+    public:
         std::string file;
         std::string link;
         std::string id;
@@ -15,7 +15,6 @@ class Article {
         std::string category;
         std::string text;
         std::vector<std::string> abbreviations;
-    public:
         Article(std::string link);
         ~Article();
         void setId(std::string id);

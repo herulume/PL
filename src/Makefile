@@ -13,11 +13,14 @@ else
 endif
 
 
-articles: input.l article.o
-	@mkdir ../bin
+articles: input.l article.o wiki.o
+	@mkdir -p ../bin/output/articles
 	@flex --noyywrap --c++ input.l
-	$(CXX) $(CFLAGS) lex.yy.cc article.o -o ../bin/articles
+	$(CXX) $(CFLAGS) lex.yy.cc article.o wiki.o -o ../bin/articles
 	@rm lex.yy.cc article.o
+
+wiki.o:
+	$(CXX) -c wiki.cpp $(CFLAGS)
 
 article.o:
 	$(CXX) -c article.cpp $(CFLAGS)
