@@ -5,7 +5,7 @@
 #include <string>
 
 class Article {
-    private:
+    public:
         std::string file;
         std::string link;
         std::string id;
@@ -13,9 +13,8 @@ class Article {
         std::string authorDate;
         std::vector<std::string> tags;
         std::string category;
-        std::string text;
+        std::vector<std::string> text;
         std::vector<std::string> abbreviations;
-    public:
         Article(std::string link);
         ~Article();
         void setId(std::string id);
@@ -23,9 +22,8 @@ class Article {
         void setAuthorDate(std::string AuthorDate);
         void addTag(std::string tag);
         void setCategory(std::string category);
-        void setText(std::string text);
+        void addText(std::string text);
         void addAbbreviation(std::string abbreviation);
-        void printer();
         void toHTML();
 };
 

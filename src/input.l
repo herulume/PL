@@ -2,8 +2,10 @@
 %option noyywrap
 %{
 #include "headers/article.h"
-#include <vector>
-std::vector<Article*> articles;
+#include "headers/wiki.h"
+#include <string>
+std::string last;
+Wiki* articles {new Wiki};
 Article* article;
 %}
 
@@ -24,13 +26,14 @@ floatN  ([0-9]+\.[0-9]+)
 intN    ([0-9]+)
 number  ({floatN}|{intN})
 
+
 %%
 <INITIAL>{
-"<!--"" "+"="+" "?                 { BEGIN LINK;       }
-(?i:tag)":{"                       { BEGIN TAG;        }
-"#"(?i:ID)":{"                     { BEGIN ID;         }
-({wordPT}("-"{wordPT})?[ ]?)+"}\n" { BEGIN CATEGORIA;  }
-"#DATE:".+"] "                     { BEGIN AUTHOR_DATE;}
+"<!--"" "+"="+" "?                 { BEGIN LINK;        }
+(?i:tag)":{"                       { BEGIN TAG;         }
+"#"(?i:ID)":{"                     { BEGIN ID;          }
+({wordPT}("-"{wordPT})?[ ]?)+"}\n" { BEGIN CATEGORIA;   }
+"#DATE:".+"] "                     { BEGIN AUTHOR_DATE; }
 }
 
 
@@ -65,10 +68,11 @@ number  ({floatN}|{intN})
 }
 
 <TEXTO>{
-"\n"+((?i:Etiquetas).+)?"\n</pub>"   { BEGIN INITIAL; }
-(.+"\n""\n"?)+                       { article->setText(yytext);
-                                       articles.push_back(article);
-                                     }
+"\n"+((?i:Etiquetas).+)?"\n</pub>"   { articles->addArticle(article); BEGIN INITIAL; }
+
+({wordPT}" "?){2,}." "*"("[A-Z]{2,}(.[A-Z]+)*")"  { article->addAbbreviation(yytext); }
+
+.+\n                       {  if(last.compare(yytext)) article->addText(yytext); yymore(); last = yytext; REJECT; }
 }
 
 <*>{silence}
@@ -77,10 +81,7 @@ number  ({floatN}|{intN})
 int main() {
     FlexLexer* lexer = new yyFlexLexer;
     lexer->yylex();
-    for (auto& a : articles) {
-        a->toHTML();
-        delete a;
-    }
-    delete lexer;
+    articles->printArticles();
+    articles->tagIndex();
     return 0;
 }
