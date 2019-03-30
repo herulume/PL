@@ -16,6 +16,7 @@ endif
 articles: input.l article.o wiki.o
 	@mkdir -p ../bin/output/articles
 	@mkdir ../bin/output/tags
+	@cp -R ../styles ../bin/output/articles
 	@flex --noyywrap --c++ input.l
 	$(CXX) $(CFLAGS) lex.yy.cc article.o wiki.o -o ../bin/articles
 	@rm lex.yy.cc article.o

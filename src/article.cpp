@@ -64,20 +64,33 @@ void Article::toHTML() {
         exit(1);
     }
 
+    os << "<!DOCTYPE html>\n<html>" << std::endl;
+
+    os << "<head>\n<meta charset=\"utf-8\"/>\n\t";
+    os << "<title>" << this->title << "</title>" << std::endl;
+    os << "</head>" << std::endl;
+
+    os << "<body>" << std::endl;
+    os << "<meta charset=\"utf-8\"/>" << std::endl;
+    os << "<link href=\"https://fonts.googleapis.com/css?family=Open+Sans\" rel=\"stylesheet\">" << std::endl;
+    os << "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/styles.css\">" << std::endl;
     os << "<pub id=\"" << this->id << "\">" << std::endl;
-    os << "  <title>" << this->title << "</title>" << std::endl;
-    os << "  <author_date>" << this->authorDate << "</author_date>" << std::endl;
-    os << "  <tags>\n    ";
-    for (auto i = this->tags.begin(); i != this->tags.end(); ++i) {
-        os << "<tag>" << *i << "</tag>";
-        if(i == this->tags.end()) os <<  " " << std::endl;
-    }
-    os << "\n  </tags>" << std::endl;
-    os << "  <category>" << this->category << "</category>" << std::endl;
-    os << "  <text>" << std::endl;
+    os << "<div class=\"articles\">\n\t\t<h1 class=\"articles\"><u>";
+    os << this-> title << "</u></h1>\n\t\t";
+    os << "<ul>\n\t\t";
+    os << "<li><small><author_date>" << this->authorDate << "</author_date></small></li>\n\n\t";
+    os << "<li><small><category>Categoria: " << this->category << "</category></small></li>" << std::endl;
+    os << "<li><small>Link original: " << this->link << "</small></li>\n\t";
+    os << "</ul></div>\n\t\t";
+    os << "\t<text>" << std::endl;
     os << this->text;
-    os << "  </text>" << std::endl;
-    os << "</pub>";
+    os << "\t</text>" << std::endl;
+    os << "<h4>Tags:</h4>\n\t<tags><ul>\n\t\t";
+    for (auto i = this->tags.begin(); i != this->tags.end(); ++i) {
+        os << "<li><tag><a href=\"../tags/" << *i << ".html\">" << *i << "</a></tag></li>\n\t\t";
+    }
+    os << "\n\t</ul></tags>\n\t";
+    os << "</pub>\n</body>\n</html>";
 
 
     outfile << os.str();
