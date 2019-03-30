@@ -79,6 +79,7 @@ int main() {
     FlexLexer* lexer = new yyFlexLexer;
     lexer->yylex();
     articles->printArticles();
+    articles->tagIndex();
     delete lexer;
     delete articles;
     return 0;
