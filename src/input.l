@@ -3,6 +3,8 @@
 %{
 #include "headers/article.h"
 #include "headers/wiki.h"
+#include <string>
+std::string last;
 Wiki* articles {new Wiki};
 Article* article;
 %}
@@ -67,9 +69,10 @@ number  ({floatN}|{intN})
 
 <TEXTO>{
 "\n"+((?i:Etiquetas).+)?"\n</pub>"   { BEGIN INITIAL; }
-(.+"\n""\n"?)+                       { article->setText(yytext);
-                                       articles->addArticle(article);
-                                     }
+
+({wordPT}" "?){2,}." "*"("[A-Z]{2,}(.[A-Z]+)*")"  { ECHO; }
+
+.+\n                       {  if(last.compare(yytext)){ yymore(); last = yytext;} REJECT; }
 }
 
 <*>{silence}
@@ -80,7 +83,5 @@ int main() {
     lexer->yylex();
     articles->printArticles();
     articles->tagIndex();
-    delete lexer;
-    delete articles;
     return 0;
 }
