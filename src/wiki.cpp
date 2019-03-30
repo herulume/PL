@@ -27,6 +27,15 @@ void Wiki::printArticles(){
 
 void Wiki::tagIndex(){
     std::string path = "./output/tags/";
+    std::string rootPath = "./output/tagIndex.html";
+    std::ostringstream rootOs;
+    std::ofstream rootOutfile;
+
+    rootOutfile.open(rootPath);
+    if(!rootOutfile.is_open()) {
+        std::cerr  << "Error creating HTML file!" << std::endl;
+        exit(1);
+    }
 
     std::unordered_map<std::string, std::vector<Article*>> articlesPerTag;
     for (auto& a : articles) {
@@ -60,6 +69,9 @@ void Wiki::tagIndex(){
         os << "</body>" << std::endl;
         outfile << os.str();
         outfile.close();
-    }
 
+        rootOs << "<a href=\"tags/" << t.first << ".html\">" << t.first << "</a>" << std::endl;
+    }
+        rootOutfile << rootOs.str();
+        rootOutfile.close();
 }
