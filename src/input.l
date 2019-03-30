@@ -68,11 +68,11 @@ number  ({floatN}|{intN})
 }
 
 <TEXTO>{
-"\n"+((?i:Etiquetas).+)?"\n</pub>"   { BEGIN INITIAL; }
+"\n"+((?i:Etiquetas).+)?"\n</pub>"   { articles->addArticle(article); BEGIN INITIAL; }
 
-({wordPT}" "?){2,}." "*"("[A-Z]{2,}(.[A-Z]+)*")"  { ECHO; }
+({wordPT}" "?){2,}." "*"("[A-Z]{2,}(.[A-Z]+)*")"  { article->addAbbreviation(yytext); }
 
-.+\n                       {  if(last.compare(yytext)){ yymore(); last = yytext;} REJECT; }
+.+\n                       {  if(last.compare(yytext)) article->addText(yytext); yymore(); last = yytext; REJECT; }
 }
 
 <*>{silence}

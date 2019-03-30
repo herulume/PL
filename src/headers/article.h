@@ -13,7 +13,7 @@ class Article {
         std::string authorDate;
         std::vector<std::string> tags;
         std::string category;
-        std::string text;
+        std::vector<std::string> text;
         std::vector<std::string> abbreviations;
         Article(std::string link);
         ~Article();
@@ -22,9 +22,8 @@ class Article {
         void setAuthorDate(std::string AuthorDate);
         void addTag(std::string tag);
         void setCategory(std::string category);
-        void setText(std::string text);
+        void addText(std::string text);
         void addAbbreviation(std::string abbreviation);
-        void printer();
         void toHTML();
 };
 

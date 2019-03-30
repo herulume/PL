@@ -1,5 +1,6 @@
 #include "headers/article.h"
 #include <iostream>
+#include <vector>
 #include <fstream>
 #include <sstream>
 
@@ -30,24 +31,12 @@ void Article::setCategory(std::string category) {
     this->category = category;
 }
 
-void Article::setText(std::string text) {
-    this->text = text;
+void Article::addText(std::string text) {
+    this->text.push_back(text);
 }
 
 void Article::addAbbreviation(std::string abbreviation) {
     this->abbreviations.push_back(abbreviation);
-}
-
-
-void Article::printer() {
-    std::cout << "Link: " << this->link << std::endl;
-    std::cout << "Title: " << this->title << std::endl;
-    std::cout << "Id: " << this->id << std::endl;
-    std::cout << "Author_Date: " << this->authorDate << std::endl;
-    std::cout << "Category: " << this->category << std::endl;
-    for (auto i = this->tags.begin(); i != this->tags.end(); ++i)
-        std::cout << "Tag: "  << *i << std::endl;
-    std::cout << "Text: " << this->text << std::endl;
 }
 
 
@@ -83,13 +72,32 @@ void Article::toHTML() {
     os << "<li><small>Link original: " << this->link << "</small></li>\n\t";
     os << "</ul></div>\n\t\t";
     os << "\t<text>" << std::endl;
-    os << this->text;
+
+    int p = 1;
+    for (auto t = this->text.begin(); t != this->text.end(); ++t) {
+        int size = (*t).length();
+        if(p) {
+            os << "<p>";
+            p = !p;
+        }
+        os << *t;
+        if(size >= 2 && ((*t)[size-2]== '.')) {
+            os << "</p>";
+            p = !p;
+        }
+    }
+
     os << "\t</text>" << std::endl;
     os << "<h4>Tags:</h4>\n\t<tags><ul>\n\t\t";
     for (auto i = this->tags.begin(); i != this->tags.end(); ++i) {
         os << "<li><tag><a href=\"../tags/" << *i << ".html\">" << *i << "</a></tag></li>\n\t\t";
     }
     os << "\n\t</ul></tags>\n\t";
+    os << "<h4>Abbreviations:</h4>\n\t<ul>\n\t\t";
+    for (auto i = this->abbreviations.begin(); i != this->abbreviations.end(); ++i) {
+        os << "<li>" << *i << "</li>\n\t\t";
+    }
+    os << "\n\t</ul>\n\t";
     os << "</pub>\n</body>\n</html>";
 
 
