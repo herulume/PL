@@ -2,9 +2,15 @@
 %option noyywrap
 %{
 #include "headers/article.h"
+#include "headers/directory.h"
 #include "headers/wiki.h"
+#include "headers/graph.h"
+#include "string.h"
 #include <string>
+#include <vector>
 std::string last;
+std::vector<std::string> tags;
+Graph* g {new Graph};
 Wiki* articles {new Wiki};
 Article* article;
 %}
@@ -48,7 +54,7 @@ number  ({floatN}|{intN})
 }
 
 <TAG>{
-[^"}"]+ { article->addTag(yytext); }
+[^"}"]+ { article->addTag(yytext); tags.push_back(yytext);}
 "}"     { BEGIN INITIAL;           }
 }
 
@@ -68,7 +74,7 @@ number  ({floatN}|{intN})
 }
 
 <TEXTO>{
-"\n"+((?i:Etiquetas).+)?"\n</pub>"   { articles->addArticle(article); BEGIN INITIAL; }
+"\n"+((?i:Etiquetas).+)?"\n</pub>"   { articles->addArticle(article); g->addTag(tags); tags.clear(); BEGIN INITIAL; }
 
 ({wordPT}" "?){2,}." "*"("[A-Z]{2,}(.[A-Z]+)*")"  { article->addAbbreviation(yytext); }
 
@@ -78,10 +84,38 @@ number  ({floatN}|{intN})
 <*>{silence}
 
 %%
-int main() {
+int main(int argc, char** argv) {
     FlexLexer* lexer = new yyFlexLexer;
+
+    if(argc == 2 && (!strcmp(argv[1], "--help") || !strcmp(argv[1], "-h"))){
+        std::cout << argv[0] << " <flags>  < input_file" << std::endl;
+        exit(0);
+    }
+
+    createStruct();
     lexer->yylex();
-    articles->printArticles();
-    articles->tagIndex();
+
+    if(argc == 1) {
+        articles->printArticles();
+        articles->titleIndex();
+        articles->tagIndex();
+        articles->index();
+        articles->generateGraphs(g);
+    }
+    if(argc == 2) {
+        if (!strcmp(argv[1], "--markdown") || !strcmp(argv[1], "-m")) {
+            articles->printArticlesMD();
+        }
+        if(!strcmp(argv[1], "--tex") || !strcmp(argv[1], "-t")) {
+            articles->printArticlesTex();
+        }
+        if(!strcmp(argv[1], "--all") || !strcmp(argv[1], "-a")) {
+            articles->printAll();
+            articles->generateGraphs(g);
+        }
+    }
+
+    delete lexer;
+    delete articles;
     return 0;
 }
