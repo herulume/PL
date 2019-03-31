@@ -93,15 +93,24 @@ int main(int argc, char** argv) {
 
     lexer->yylex();
 
-    if(argc == 2 && (!strcmp(argv[1], "--markdown") || !strcmp(argv[1], "-m"))) {
-        articles->printAll();
-        articles->generateGraphs(g);
-    } else {
+    if(argc == 1) {
         articles->printArticles();
         articles->titleIndex();
         articles->tagIndex();
         articles->index();
         articles->generateGraphs(g);
+    }
+    if(argc == 2) {
+        if (!strcmp(argv[1], "--markdown") || !strcmp(argv[1], "-m")) {
+            articles->printArticlesMD();
+        }
+        if(!strcmp(argv[1], "--tex") || !strcmp(argv[1], "-t")) {
+            articles->printArticlesTex();
+        }
+        if(!strcmp(argv[1], "--all") || !strcmp(argv[1], "-a")) {
+            articles->printAll();
+            articles->generateGraphs(g);
+        }
     }
 
     delete lexer;

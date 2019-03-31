@@ -26,6 +26,7 @@ class Article {
         void addAbbreviation(std::string abbreviation);
         void toHTML();
         void toMarkdown();
+        void toTex();
 };
 
 #endif

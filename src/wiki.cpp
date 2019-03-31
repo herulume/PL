@@ -26,6 +26,7 @@ void Wiki::addArticle(Article* a){
 void Wiki::printAll(){
     this->printArticles();
     this->printArticlesMD();
+    this->printArticlesTex();
     this->titleIndex();
     this->tagIndex();
     this->index();
@@ -40,6 +41,12 @@ void Wiki::printArticles(){
 void Wiki::printArticlesMD(){
     for (auto& a : articles) {
         a->toMarkdown();
+    }
+}
+
+void Wiki::printArticlesTex(){
+    for (auto& a : articles) {
+        a->toTex();
     }
 }
 
@@ -159,3 +166,4 @@ void Wiki::tagIndex(){
     rootOutfile << rootOs.str();
     rootOutfile.close();
 }
+

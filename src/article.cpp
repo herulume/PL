@@ -125,6 +125,7 @@ void Article::toMarkdown() {
     os << "# " << this->title << std::endl << std::endl;
     os << "## Id" << std::endl << this->id << std::endl << std::endl;
     os << "## Title" << std::endl << this->title << std::endl << std::endl;
+    os << "## Original Link" << std::endl << this->link << std::endl << std::endl;
     os << "## Author Date" << std::endl << this->authorDate << std::endl << std::endl;
     os << "## Tags" << std::endl;
     for (auto i = this->tags.begin(); i != this->tags.end(); ++i) {
@@ -146,12 +147,58 @@ void Article::toMarkdown() {
     }
     os << std::endl;
     if(this->abbreviations.size() > 0) {
-    os << "## Abbreviations" << std::endl;
+        os << "## Abbreviations" << std::endl;
         for (auto i = this->abbreviations.begin(); i != this->abbreviations.end(); ++i) {
             os << "* " << *i << std::endl;
         }
     }
 
+    outfile << os.str();
+    outfile.close();
+}
+
+void Article::toTex() {
+    std::string path = "./output/articles/";
+    std::ofstream outfile;
+    std::ostringstream os;
+    std::ostringstream fileName;
+
+    fileName << path << this->id << ".tex";
+    outfile.open(fileName.str());
+    if(!outfile.is_open()) {
+        std::cerr  << "Error creating TeX file!" << std::endl;
+        exit(1);
+    }
+
+    os << "\\documentclass[a4paper]{article}\n\\usepackage[pdftex]{hyperref}\n\\";
+    os << "usepackage[utf8]{inputenc}\n\\begin{document}\n\\title{" << this->title << "}" << std::endl;
+    os << "\\maketitle\n\\author{" << this->authorDate << "}\n\\setcounter{tocdepth}{1}\n\\tableofcontents\n\n\\newpage" << std::endl;
+    os << "\\section{Id}\n" << this->id << std::endl;
+    os << "\\section{Original link}\n" << this->link << std::endl;
+    os << "\\section{Category}\n" << this->category << std::endl;
+    os << "\\section{Tags}\n" << std::endl;
+    os << "\\begin{itemize}" << std::endl;
+    for (auto i = this->tags.begin(); i != this->tags.end(); ++i) {
+        os << "\\item " << *i << std::endl;
+    }
+    os << "\\end{itemize}" << std::endl;
+    os << std::endl;
+    os << "\\section{Text}\n" << std::endl;
+    for (auto t = this->text.begin(); t != this->text.end(); ++t) {
+        os << *t;
+    }
+    os << std::endl;
+
+    if(this->abbreviations.size() > 0) {
+        os << "\\section{Abbreviations}\n" << std::endl;
+        os << "\\begin{itemize}" << std::endl;
+        for (auto i = this->abbreviations.begin(); i != this->abbreviations.end(); ++i) {
+            os << "\\item " << *i << std::endl;
+        }
+        os << "\\end{itemize}" << std::endl;
+    }
+
+    os << "\\end{document}\n";
     outfile << os.str();
     outfile.close();
 }
