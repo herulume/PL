@@ -13,12 +13,12 @@ else
 endif
 
 
-articles: input.l article.o wiki.o graph.o
+articles: input.l article.o wiki.o graph.o directory.o
 	@mkdir -p ../bin/output/articles
 	@mkdir ../bin/output/tags
 	@cp -R ../styles ../bin/output/articles
 	@flex --noyywrap --c++ input.l
-	$(CXX) $(CFLAGS) lex.yy.cc article.o wiki.o graph.o -o ../bin/articles
+	$(CXX) $(CFLAGS) lex.yy.cc directory.o article.o wiki.o graph.o -o ../bin/articles
 	@rm lex.yy.cc article.o
 
 wiki.o:
@@ -29,6 +29,9 @@ article.o:
 
 graph.o:
 	$(CXX) -c graph.cpp $(CFLAGS)
+
+directory.o:
+	$(CXX) -c directory.c $(CFLAGS)
 
 clean:
 	@rm -rf ../bin lex.yy.cc *.o 2>/dev/null || true

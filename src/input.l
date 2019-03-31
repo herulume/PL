@@ -2,6 +2,7 @@
 %option noyywrap
 %{
 #include "headers/article.h"
+#include "headers/directory.h"
 #include "headers/wiki.h"
 #include "headers/graph.h"
 #include "string.h"
@@ -91,6 +92,7 @@ int main(int argc, char** argv) {
         exit(0);
     }
 
+    createStruct();
     lexer->yylex();
 
     if(argc == 1) {
