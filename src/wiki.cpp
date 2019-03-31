@@ -1,6 +1,8 @@
 #include "headers/wiki.h"
+#include "headers/graph.h"
 #include <vector>
 #include <unordered_map>
+#include <set>
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -34,7 +36,6 @@ void Wiki::printArticles(){
     }
 }
 
-
 void Wiki::index(){
     std::string rootPath = "./output/index.html";
     std::ostringstream rootOs;
@@ -61,6 +62,20 @@ void Wiki::index(){
 
     rootOutfile << rootOs.str();
     rootOutfile.close();
+}
+
+void Wiki::generateGraphs(Graph* g){
+    std::set<std::string> tags;
+
+    for(auto a : this->articles) {
+        for(auto t : a->tags) {
+            tags.insert(t);
+        }
+    }
+
+    for(auto t : tags){
+        g->printTagG(t);
+    }
 }
 
 void Wiki::titleIndex(){
@@ -123,10 +138,11 @@ void Wiki::tagIndex(){
             std::cerr  << "Error creating HTML file!" << std::endl;
             continue;
         }
-        os << "<!DOCTYPE html>\n<html>\n<head><title>" << t.first << "</title></head>\n<body><h1>Number of articles: " << t.second.size() << "</h1>\n\t<ul>" << std::endl;
+        os << "<!DOCTYPE html>\n<html>\n<head><title>" << t.first << "</title></head>\n<body><h1>Number of articles: " << t.second.size() << "</h1>\n<h2>Articles:</h2>\n\t<ul>" << std::endl;
         for(auto v : t.second)
             os << "<l1><a href=\"../articles/" << v->id << ".html\">" << v->title << "</a></l1>" << std::endl;
-        os << "</ul></body></html>"<< std::endl;
+        os << "</ul>" << std::endl;
+        os << "<img src=\"" << t.first << ".dot.png\" alt=\"" << t.first<< "Graph\" >\n</body></html>"<< std::endl;
         outfile << os.str();
         outfile.close();
 

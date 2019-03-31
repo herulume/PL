@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "article.h"
+#include "graph.h"
 
 class Wiki {
     public:
@@ -15,7 +16,7 @@ class Wiki {
         void titleIndex();
         void printArticles();
         void addArticle(Article*);
-
+        void generateGraphs(Graph*);
 };
 
 #endif

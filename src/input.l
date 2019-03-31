@@ -3,8 +3,12 @@
 %{
 #include "headers/article.h"
 #include "headers/wiki.h"
+#include "headers/graph.h"
 #include <string>
+#include <vector>
 std::string last;
+std::vector<std::string> tags;
+Graph* g {new Graph};
 Wiki* articles {new Wiki};
 Article* article;
 %}
@@ -48,7 +52,7 @@ number  ({floatN}|{intN})
 }
 
 <TAG>{
-[^"}"]+ { article->addTag(yytext); }
+[^"}"]+ { article->addTag(yytext); tags.push_back(yytext);}
 "}"     { BEGIN INITIAL;           }
 }
 
@@ -68,7 +72,7 @@ number  ({floatN}|{intN})
 }
 
 <TEXTO>{
-"\n"+((?i:Etiquetas).+)?"\n</pub>"   { articles->addArticle(article); BEGIN INITIAL; }
+"\n"+((?i:Etiquetas).+)?"\n</pub>"   { articles->addArticle(article); g->addTag(tags); tags.clear(); BEGIN INITIAL; }
 
 ({wordPT}" "?){2,}." "*"("[A-Z]{2,}(.[A-Z]+)*")"  { article->addAbbreviation(yytext); }
 
@@ -82,6 +86,7 @@ int main() {
     FlexLexer* lexer = new yyFlexLexer;
     lexer->yylex();
     articles->printAll();
+    articles->generateGraphs(g);
     delete lexer;
     delete articles;
     return 0;
