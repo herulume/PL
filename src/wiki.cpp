@@ -51,7 +51,9 @@ void Wiki::tagIndex(){
             }
         }
     }
-    // TODO print stuff
+
+    rootOs << "<!DOCTYPE html>\n<html>\n\t<head><title>Tags!</title></head>\n\t<body><h1>Tags:</h1>\n\t\t<ul>";
+
     for (auto t : articlesPerTag){
         std::ofstream outfile;
         std::ostringstream os;
@@ -62,16 +64,16 @@ void Wiki::tagIndex(){
             std::cerr  << "Error creating HTML file!" << std::endl;
             continue;
         }
-        os << "<head>Nr: " << t.second.size() << "</head>" << std::endl;
-        os << "<body>" << std::endl;
+        os << "<!DOCTYPE html>\n<html>\n<head><title>" << t.first << "</title></head>\n<body><h1>Number of articles: " << t.second.size() << "</h1>\n\t<ul>" << std::endl;
         for(auto v : t.second)
-            os << "<b>"<< v->title << "</b>" << std::endl;
-        os << "</body>" << std::endl;
+            os << "<l1><a href=\"../articles/" << v->id << ".html\">" << v->title << "</a></l1>" << std::endl;
+        os << "</ul></body></html>"<< std::endl;
         outfile << os.str();
         outfile.close();
 
-        rootOs << "<a href=\"tags/" << t.first << ".html\">" << t.first << "</a>" << std::endl;
+        rootOs << "<li><a href=\"tags/" << t.first << ".html\">" << t.first << "</a></li>\n\t\t";
     }
+        rootOs << "</ul>\n</body>\n</html>";
         rootOutfile << rootOs.str();
         rootOutfile.close();
 }
