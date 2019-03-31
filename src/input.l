@@ -93,8 +93,16 @@ int main(int argc, char** argv) {
 
     lexer->yylex();
 
-    articles->printAll();
-    articles->generateGraphs(g);
+    if(argc == 2 && (!strcmp(argv[1], "--markdown") || !strcmp(argv[1], "-m"))) {
+        articles->printAll();
+        articles->generateGraphs(g);
+    } else {
+        articles->printArticles();
+        articles->titleIndex();
+        articles->tagIndex();
+        articles->index();
+        articles->generateGraphs(g);
+    }
 
     delete lexer;
     delete articles;

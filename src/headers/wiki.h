@@ -15,6 +15,7 @@ class Wiki {
         void tagIndex();
         void titleIndex();
         void printArticles();
+        void printArticlesMD();
         void addArticle(Article*);
         void generateGraphs(Graph*);
 };

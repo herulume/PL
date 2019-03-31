@@ -107,3 +107,51 @@ void Article::toHTML() {
     outfile << os.str();
     outfile.close();
 }
+
+
+void Article::toMarkdown() {
+    std::string path = "./output/articles/";
+    std::ofstream outfile;
+    std::ostringstream os;
+    std::ostringstream fileName;
+
+    fileName << path << this->id << ".md";
+    outfile.open(fileName.str());
+    if(!outfile.is_open()) {
+        std::cerr  << "Error creating Markdown file!" << std::endl;
+        exit(1);
+    }
+
+    os << "# " << this->title << std::endl << std::endl;
+    os << "## Id" << std::endl << this->id << std::endl << std::endl;
+    os << "## Title" << std::endl << this->title << std::endl << std::endl;
+    os << "## Author Date" << std::endl << this->authorDate << std::endl << std::endl;
+    os << "## Tags" << std::endl;
+    for (auto i = this->tags.begin(); i != this->tags.end(); ++i) {
+        os << "* " << *i << std::endl;
+    }
+    os << std::endl;
+    os << "## Text" << std::endl;
+    int p = 1;
+    for (auto t = this->text.begin(); t != this->text.end(); ++t) {
+        int size = (*t).length();
+        if(p) {
+            p = !p;
+        }
+        os << *t;
+        if(size >= 2 && ((*t)[size-2]== '.')) {
+            os << std::endl;
+            p = !p;
+        }
+    }
+    os << std::endl;
+    if(this->abbreviations.size() > 0) {
+    os << "## Abbreviations" << std::endl;
+        for (auto i = this->abbreviations.begin(); i != this->abbreviations.end(); ++i) {
+            os << "* " << *i << std::endl;
+        }
+    }
+
+    outfile << os.str();
+    outfile.close();
+}
