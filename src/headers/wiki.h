@@ -9,7 +9,10 @@ class Wiki {
         Wiki();
         ~Wiki();
         std::vector<Article*> articles;
+        void index();
+        void printAll();
         void tagIndex();
+        void titleIndex();
         void printArticles();
         void addArticle(Article*);
 

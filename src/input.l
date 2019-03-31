@@ -81,7 +81,8 @@ number  ({floatN}|{intN})
 int main() {
     FlexLexer* lexer = new yyFlexLexer;
     lexer->yylex();
-    articles->printArticles();
-    articles->tagIndex();
+    articles->printAll();
+    delete lexer;
+    delete articles;
     return 0;
 }

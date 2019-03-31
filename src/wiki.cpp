@@ -19,10 +19,69 @@ void Wiki::addArticle(Article* a){
     }
 }
 
+
+
+void Wiki::printAll(){
+    this->printArticles();
+    this->titleIndex();
+    this->tagIndex();
+    this->index();
+}
+
 void Wiki::printArticles(){
     for (auto& a : articles) {
         a->toHTML();
     }
+}
+
+
+void Wiki::index(){
+    std::string rootPath = "./output/index.html";
+    std::ostringstream rootOs;
+    std::ofstream rootOutfile;
+
+    rootOutfile.open(rootPath);
+    if(!rootOutfile.is_open()) {
+        std::cerr  << "Error creating HTML file!" << std::endl;
+        exit(1);
+    }
+
+    rootOs << "<!DOCTYPE html>\n<html>\n\t<head><title>Articles!</title></head>\n\t";
+    rootOs << "<body>";
+    rootOs << "<h1><pre>" << "   _____          __  .__       .__                 \n";
+    rootOs << "  /  _  \\________/  |_|__| ____ |  |   ____   ______\n";
+    rootOs << " /  /_\\  \\_  __ \\   __\\  |/ ___\\|  | _/ __ \\ /  ___/\n";
+    rootOs << "/    |    \\  | \\/|  | |  \\  \\___|  |_\\  ___/ \\___ \\ \n";
+    rootOs << "\\____|__  /__|   |__| |__|\\___  >____/\\___  >____  >\n";
+    rootOs << "        \\/                    \\/          \\/     \\/ \n";
+    rootOs << "</pre></h1>\n";
+    rootOs <<"<h2><a href=\"titleIndex.html\">Articles per title</a></h2>\n";
+    rootOs << "<h2><a href=\"tagIndex.html\">Articles per tag</a></h2>";
+    rootOs << "</body></html>";
+
+    rootOutfile << rootOs.str();
+    rootOutfile.close();
+}
+
+void Wiki::titleIndex(){
+    std::string rootPath = "./output/titleIndex.html";
+    std::ostringstream rootOs;
+    std::ofstream rootOutfile;
+
+    rootOutfile.open(rootPath);
+    if(!rootOutfile.is_open()) {
+        std::cerr  << "Error creating HTML file!" << std::endl;
+        exit(1);
+    }
+
+    rootOs << "<!DOCTYPE html>\n<html>\n\t<head><title>Articles!</title></head>\n\t<body><h1>Articles:</h1>\n\t\t<ul>";
+
+    for (auto t : this->articles){
+        rootOs << "<li><a href=\"articles/" << t->id << ".html\">" << t->title << "</a></li>\n\t\t";
+    }
+    rootOs << "</ul>\n</body>\n</html>";
+    rootOutfile << rootOs.str();
+    rootOutfile.close();
 }
 
 void Wiki::tagIndex(){
@@ -73,7 +132,7 @@ void Wiki::tagIndex(){
 
         rootOs << "<li><a href=\"tags/" << t.first << ".html\">" << t.first << "</a></li>\n\t\t";
     }
-        rootOs << "</ul>\n</body>\n</html>";
-        rootOutfile << rootOs.str();
-        rootOutfile.close();
+    rootOs << "</ul>\n</body>\n</html>";
+    rootOutfile << rootOs.str();
+    rootOutfile.close();
 }
