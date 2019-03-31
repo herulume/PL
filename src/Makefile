@@ -36,10 +36,15 @@ directory.o:
 clean:
 	@rm -rf ../bin lex.yy.cc *.o 2>/dev/null || true
 
-install:
+install: articles.l
 	@cp ../bin/articles /usr/bin
 	@cp ../bin/articles /usr/local/bin
-
+	@cp articles.l a.l
+	@gzip a.l
+	@cp a.l.gz /usr/share/man/man1/articles.1.gz
+	@mandb
+	@rm a.l.gz
 remove:
 	@rm /usr/bin/articles
 	@rm /usr/local/bin/articles
+	@rm /usr/share/man/man1/articles.1.gz
