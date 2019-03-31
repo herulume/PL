@@ -93,11 +93,14 @@ void Article::toHTML() {
         os << "<li><tag><a href=\"../tags/" << *i << ".html\">" << *i << "</a></tag></li>\n\t\t";
     }
     os << "\n\t</ul></tags>\n\t";
-    os << "<h4>Abbreviations:</h4>\n\t<ul>\n\t\t";
-    for (auto i = this->abbreviations.begin(); i != this->abbreviations.end(); ++i) {
-        os << "<li>" << *i << "</li>\n\t\t";
+
+    if(this->abbreviations.size() > 0) {
+        os << "<h4>Abbreviations:</h4>\n\t<ul>\n\t\t";
+        for (auto i = this->abbreviations.begin(); i != this->abbreviations.end(); ++i) {
+            os << "<li>" << *i << "</li>\n\t\t";
+        }
+        os << "\n\t</ul>\n\t";
     }
-    os << "\n\t</ul>\n\t";
     os << "</pub>\n</body>\n</html>";
 
 
