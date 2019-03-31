@@ -4,6 +4,7 @@
 #include "headers/article.h"
 #include "headers/wiki.h"
 #include "headers/graph.h"
+#include "string.h"
 #include <string>
 #include <vector>
 std::string last;
@@ -82,11 +83,19 @@ number  ({floatN}|{intN})
 <*>{silence}
 
 %%
-int main() {
+int main(int argc, char** argv) {
     FlexLexer* lexer = new yyFlexLexer;
+
+    if(argc == 2 && (!strcmp(argv[1], "--help") || !strcmp(argv[1], "-h"))){
+        std::cout << argv[0] << " <flags>  < input_file" << std::endl;
+        exit(0);
+    }
+
     lexer->yylex();
+
     articles->printAll();
     articles->generateGraphs(g);
+
     delete lexer;
     delete articles;
     return 0;
