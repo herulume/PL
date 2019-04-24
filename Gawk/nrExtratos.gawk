@@ -1,7 +1,11 @@
-BEGIN { RS="\n"; print "NºExtract -> NºRecords"; }
-
-$1 == 1 {extracts++;}
-$1 != "" {lines[extracts]++;}
+BEGIN { RS="\n"; max=0; print "Extract number (Nº Records)"; }
 
 
-END { for(i in lines) {print i " -> " lines[i] }; print "\nTotal Extracts: " extracts;}
+$1 == 1  { if(extracts>max) max=extracts; extracts++; }
+$1 != "" { lines[extracts]++; }
+
+
+END { for(i in lines) {print "[*] #" i " (" lines[i] " lines)"};
+      print "\nNumber of extracts: " extracts;
+      print "Extract with most lines: " max " (" lines[max] " lines)";
+    }
