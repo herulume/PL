@@ -7,9 +7,9 @@ $3 ~ /^[a-zA-ZàÀáÁâÂãÃéÉèÈêÊẽẼíÍìÌîÎĩĨóÓòÒôÔõÕ
 
 END {
     for(l in lemmas){
-        { print "[*] Lemma: " l; }
+            { print "[*] Lemma: " l; };
         for(w in lemmas[l]){
-            { print "\tWord: " w " <-> Pos: " lemmas[l][w]}
+            { print "\tWord: " w " <-> Pos: " lemmas[l][w] };
         };
     };
 
