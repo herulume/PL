@@ -1,10 +1,10 @@
 function toHTML(){
-    print "<HTML>\n\t<h1>" ARGV[1] " extract metrics!</h1>\n" > ARGV[1]"eNr.html";
+    print "<!DOCTYPE html>\n<HTML>\n<body>\n<header><h1>" ARGV[1] " extract metrics!</h1></header>\n" > ARGV[1]"eNr.html";
     print "\t<h3>Number of extracts: " exctratNr "</h3>\n" >> ARGV[1]"eNr.html";
     print "<h3>Extract with the most lines: " max "</h3>\n" >> ARGV[1]"eNr.html";
     print "<h3>Extract with the least lines: " min "</h3>\n" >> ARGV[1]"eNr.html";
     print "<h3>Average lines per extract: " sum/ exctratNr "</h3>\n" >> ARGV[1]"eNr.html";
-    print "\n</HTML>" > ARGV[1]"eNr.html";
+    print "</body>" > ARGV[1]"eNr.html";
 }
 
 BEGIN { RS="\n";
