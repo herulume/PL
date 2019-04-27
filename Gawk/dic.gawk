@@ -1,7 +1,7 @@
 function toHTML() {
    print "<!DOCTYPE html>\n<HTML><body>\n<meta charset=\"UTF-8\">\n<header>\n<h1>Dicionário implícito</h1>\n</header>"> "dic.html"
    print "<table border='1'>"> "dic.html"
-   print "<tr><td><b> Palavra <b></td><td><b> Lema </b></td><td><b> POS </b></td></tr>" >> "dic.html"
+   print "<tr><td><b> Palavra </b></td><td><b> Lema </b></td><td><b> POS </b></td></tr>" >> "dic.html"
 
    for (l in lemmas) {
     for(w in lemmas[l]){
