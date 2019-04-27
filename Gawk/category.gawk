@@ -1,10 +1,10 @@
 function toHTML(type, header, info) {
-   print "<!DOCTYPE html>\n<HTML><body>\n<meta charset=\"UTF-8\">\n<header>\n<h1>" header "</h1>\n</header>" > type".html"
-   print "<table border='1'>" > type".html"
-   print "<tr><td><b> Word </b></td><td><b> Number of occurrences </b></td></tr>" >> type".html"
+   print "<!DOCTYPE html>\n<HTML><body>\n<meta charset=\"UTF-8\">\n<header>\n<h1>" header "</h1>\n</header>" > ARGV[1]type".html"
+   print "<table border='1'>" >  ARGV[1]type".html"
+   print "<tr><td><b> Word </b></td><td><b> Number of occurrences </b></td></tr>" >> ARGV[1]type".html"
 
    for (w in info) {
-        print "<tr><td>" w "</td><td>" info[w] "</td></tr>" |" sort -k2n >> " type".html";
+        print "<tr><td>" w "</td><td>" info[w] "</td></tr>" |" sort -k2n >> " ARGV[1]type".html";
    }
 }
 

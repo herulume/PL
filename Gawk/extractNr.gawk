@@ -4,7 +4,7 @@ function toHTML(){
     print "<h3>Extract with the most lines: " max "</h3>\n" >> ARGV[1]"eNr.html";
     print "<h3>Extract with the least lines: " min "</h3>\n" >> ARGV[1]"eNr.html";
     print "<h3>Average lines per extract: " sum/ exctratNr "</h3>\n" >> ARGV[1]"eNr.html";
-    print "</body>" > ARGV[1]"eNr.html";
+    print "</body>" >> ARGV[1]"eNr.html";
 }
 
 BEGIN { RS="\n";
