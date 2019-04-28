@@ -10,7 +10,8 @@ function toHTML() {
 
 BEGIN { RS="\n";  }
 
-# $2 is the word
+# $2 name
+# $5 pos
 $5 == "NP"  {names[$2]++;}
 
 END { toHTML(); }
